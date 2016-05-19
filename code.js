@@ -75,24 +75,36 @@ function main() {
 	var link = svg.selectAll(".link")
 	  .data(graph.links)
 		.enter().append("g")
+		.on("mouseover", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "visible")
+		})
+		.on("mouseout", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "hidden")
+		})
 
 	link.append("line")
 		.attr("class", "link")
-		.style("stroke-width", function(d) { return d.value })
+		.style("stroke-width", 2)
 		.style("marker-end",  "url(#suit)")
 
 	link.append("text")
 		.attr("dx", 12)
 		.attr("dy", ".35em")
 		.text(function(d) { return d.position })
-		.style("visibility", function(d) { return d.position > 0 ? "visible" : "hidden"})
 		.attr("class", "linelabel")
+		.style("visibility", "hidden")
 
 	// Set nodes attributes
 	var node = svg.selectAll(".node")
 		.data(graph.nodes)
 		.enter().append("g")
 		.attr("class", "node")
+		.on("mouseover", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "visible")
+		})
+		.on("mouseout", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "hidden")
+		})
 
 	node.append("circle")
 		.attr("r", nodeRadius)
@@ -104,6 +116,7 @@ function main() {
 		.text(function(d) { return d.name })
 		.style("stroke", "gray")
 		.attr("class", "name")
+		.style("visibility", "hidden")
 
 	d3.selectAll("line")
 		.attr("x1", function (d) { return d.source.x })
@@ -128,7 +141,6 @@ function toLink(edge) {
 	return {
 		source: edge.fromNodeId,
 		target: edge.toNodeId,
-		value: 1,
 		id: edge.id,
 		position: totalPosition(edges[edge.id]),
 	}
