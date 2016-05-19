@@ -84,7 +84,7 @@ function main() {
 
 	link.append("line")
 		.attr("class", "link")
-		.style("stroke-width", 2)
+		.style("stroke-width", 1)
 		.style("marker-end",  "url(#suit)")
 
 	link.append("text")
