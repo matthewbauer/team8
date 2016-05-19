@@ -1,25 +1,15 @@
-
-/**
-* Graph config
-*/
 var width = 960;
 var height = 500;
 var linkDistance = 200;
 var nodeRadius = 20;
 
-
-
-/**
-* Main function
-*/
 function main() {
-
-	//Load graph data
+	// Load graph data
 	var graph = loadGraph();
 
 	var color = d3.scale.category20();
 
-	//Force layout
+	// Force layout
 	var force = d3.layout.force()
 		.charge(-120)
 		.linkDistance(linkDistance)
@@ -29,7 +19,7 @@ function main() {
 		.attr("width", width)
 		.attr("height", height);
 
-	//Arrow marker
+	// Arrow marker
 	svg.append("defs").selectAll("marker")
 		.data(["suit", "licensing", "resolved"])
 	  .enter().append("marker")
@@ -50,7 +40,7 @@ function main() {
 		  .links(graph.links)
 		  .start();
 
-	//Set link attributes
+	// Set link attributes
 	var link = svg.selectAll(".link")
 		  .data(graph.links)
 		.enter().append("line")
@@ -58,7 +48,7 @@ function main() {
 		  .style("stroke-width", function(d) { return d.value; })
 		  .style("marker-end",  "url(#suit)");
 
-	//Set nodes attributes
+	// Set nodes attributes
 	var node = svg.selectAll(".node")
 		.data(graph.nodes)
 		.enter().append("g")
@@ -68,7 +58,7 @@ function main() {
 	node.append("circle")
 		.attr("r", nodeRadius)
 		.style("fill", function (d) {return color(d.group);});
-		  
+
 	node.append("text")
 		.attr("dx", 12)
 		.attr("dy", ".35em")
@@ -85,10 +75,7 @@ function main() {
 		d3.selectAll("text").attr("x", function (d) {return d.x;})
 			.attr("y", function (d) {return d.y;});
 	});
-
-
 }
-
 
 /**
 * Create json with graph.
@@ -106,12 +93,6 @@ function loadGraph() {
 			{"source":0, "target":2, "value":1},
 		]
 	};
-	
+
 	return graph;
 }
-
-
-
-
-
-
