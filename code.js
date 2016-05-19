@@ -1,5 +1,5 @@
-var width = 960
-var height = 500
+var width = window.innerWidth - 10
+var height = window.innerHeight - 10
 var linkDistance = 200
 var nodeRadius = 20
 
