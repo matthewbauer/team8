@@ -66,16 +66,14 @@ function main() {
 		.text(function(d) { return d.name })
 		.style("stroke", "gray")
 
-	force.on("tick", function () {
-		link.attr("x1", function (d) { return d.source.x })
-			.attr("y1", function (d) { return d.source.y })
-			.attr("x2", function (d) { return d.target.x })
-			.attr("y2", function (d) { return d.target.y })
-		d3.selectAll("circle").attr("cx", function (d) { return d.x })
-			.attr("cy", function (d) { return d.y })
-		d3.selectAll("text").attr("x", function (d) { return d.x })
-			.attr("y", function (d) { return d.y })
-	})
+	link.attr("x1", function (d) { return d.source.x })
+		.attr("y1", function (d) { return d.source.y })
+		.attr("x2", function (d) { return d.target.x })
+		.attr("y2", function (d) { return d.target.y })
+	d3.selectAll("circle").attr("cx", function (d) { return d.x })
+		.attr("cy", function (d) { return d.y })
+	d3.selectAll("text").attr("x", function (d) { return d.x })
+		.attr("y", function (d) { return d.y })
 }
 
 function toLink(edge) {
@@ -90,5 +88,7 @@ function toNode(data) {
 	return {
 		name: data.name,
 		group: 1,
+		x: (data.x + 500) * width / 2000,
+		y: (data.y + 100) * height / 1300,
 	}
 }
