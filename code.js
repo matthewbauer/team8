@@ -4,8 +4,10 @@ var linkDistance = 200;
 var nodeRadius = 20;
 
 function main() {
-	// Load graph data
-	var graph = loadGraph();
+	var graph = {
+		nodes: data_nodes.map(toNode),
+		links: data_edges.map(toLink),
+	};
 
 	var color = d3.scale.category20();
 
@@ -77,22 +79,17 @@ function main() {
 	});
 }
 
-/**
-* Create json with graph.
-* Replace this with the real data.
-*/
-function loadGraph() {
-	var graph = {
-		"nodes" :[
-			{"name": "Node1", "group":1},
-			{"name": "Node2", "group":2},
-			{"name": "Node3", "group":3}
-		],
-		"links":[
-			{"source":0, "target":1, "value":1},
-			{"source":0, "target":2, "value":1},
-		]
+function toLink(edge) {
+	return {
+		source: edge.fromNodeId,
+		target: edge.toNodeId,
+		value: 1,
 	};
+}
 
-	return graph;
+function toNode(data) {
+	return {
+		name: data.name,
+		group: 1,
+	};
 }
