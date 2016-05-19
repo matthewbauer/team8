@@ -84,8 +84,8 @@ function main() {
 	link.append("text")
 		.attr("dx", 12)
 		.attr("dy", ".35em")
-		.text(function(d) { return totalPosition(edges[d.id]) })
-		.style("stroke", "gray")
+		.text(function(d) { return d.position })
+		.style("visibility", function(d) { return d.position > 0 ? "visible" : "hidden"})
 		.attr("class", "linelabel")
 
 	// Set nodes attributes
@@ -130,6 +130,7 @@ function toLink(edge) {
 		target: edge.toNodeId,
 		value: 1,
 		id: edge.id,
+		position: totalPosition(edges[edge.id]),
 	}
 }
 
