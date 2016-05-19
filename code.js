@@ -3,6 +3,35 @@ var height = window.innerHeight - 10
 var linkDistance = 200
 var nodeRadius = 20
 
+function toMap(map, key) {
+	var out = {}
+	for (var k in map) {
+		out[map[k][key]] = map[k]
+	}
+	return out
+}
+
+function toMapArray(map, key) {
+	var out = {}
+	for (var k in map) {
+		if (!(map[k][key] in out))
+			out[map[k][key]] = []
+		out[map[k][key]].push(map[k])
+	}
+	return out
+}
+
+var instruments = toMap(data_instruments, 'id')
+var edges = toMapArray(data_edge_positions, 'edgeId')
+
+function totalPosition(ns) {
+	return ns.map(function(instrument) {
+		return instrument.qty * instruments[instrument.instrumentId].price
+	}).reduce(function(a, b) {
+		return a + b
+	}, 0)
+}
+
 function main() {
 	var graph = {
 		nodes: data_nodes.map(toNode),
@@ -38,17 +67,26 @@ function main() {
 		.style("opacity", "0.6")
 
 	force
-		  .nodes(graph.nodes)
-		  .links(graph.links)
-			.start()
+		.nodes(graph.nodes)
+		.links(graph.links)
+		.start()
 
 	// Set link attributes
 	var link = svg.selectAll(".link")
-		  .data(graph.links)
-		.enter().append("line")
-		  .attr("class", "link")
-		  .style("stroke-width", function(d) { return d.value })
-		  .style("marker-end",  "url(#suit)")
+	  .data(graph.links)
+		.enter().append("g")
+
+	link.append("line")
+		.attr("class", "link")
+		.style("stroke-width", function(d) { return d.value })
+		.style("marker-end",  "url(#suit)")
+
+	link.append("text")
+		.attr("dx", 12)
+		.attr("dy", ".35em")
+		.text(function(d) { return totalPosition(edges[d.id]) })
+		.style("stroke", "gray")
+		.attr("class", "linelabel")
 
 	// Set nodes attributes
 	var node = svg.selectAll(".node")
@@ -65,14 +103,24 @@ function main() {
 		.attr("dy", ".35em")
 		.text(function(d) { return d.name })
 		.style("stroke", "gray")
+		.attr("class", "name")
 
-	link.attr("x1", function (d) { return d.source.x })
+	d3.selectAll("line")
+		.attr("x1", function (d) { return d.source.x })
 		.attr("y1", function (d) { return d.source.y })
 		.attr("x2", function (d) { return d.target.x })
 		.attr("y2", function (d) { return d.target.y })
-	d3.selectAll("circle").attr("cx", function (d) { return d.x })
+
+	d3.selectAll(".linelabel")
+		.attr("x", function (d) { return (d.source.x + d.target.x) / 2 })
+		.attr("y", function (d) { return (d.source.y + d.target.y) / 2 })
+
+	d3.selectAll("circle")
+		.attr("cx", function (d) { return d.x })
 		.attr("cy", function (d) { return d.y })
-	d3.selectAll("text").attr("x", function (d) { return d.x })
+
+	d3.selectAll(".name")
+		.attr("x", function (d) { return d.x })
 		.attr("y", function (d) { return d.y })
 }
 
@@ -81,6 +129,7 @@ function toLink(edge) {
 		source: edge.fromNodeId,
 		target: edge.toNodeId,
 		value: 1,
+		id: edge.id,
 	}
 }
 

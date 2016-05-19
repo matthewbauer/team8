@@ -200,6 +200,7 @@ var data_instruments = [
   {'id': 60, 'price': 18.5634327474},
   {'id': 61, 'price': 4.4579024172},
   {'id': 62, 'price': 0.974709840186},
+  {'id': 63, 'price': 0.974709840186},
 ];
 
 // Edge positions
