@@ -61,10 +61,6 @@ function main() {
 		.attr("markerWidth", 12)
 		.attr("markerHeight", 12)
 		.attr("orient", "auto")
-	  .append("path")
-		.attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
-		.style("stroke", "#4679BD")
-		.style("opacity", "0.6")
 
 	force
 		.nodes(graph.nodes)
@@ -84,7 +80,7 @@ function main() {
 
 	link.append("line")
 		.attr("class", "link")
-		.style("stroke-width", 1)
+		.style("stroke-width", 10)
 		.style("marker-end",  "url(#suit)")
 
 	link.append("text")
