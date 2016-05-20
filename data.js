@@ -206,6 +206,7 @@ var data_instruments = [
 ];
 
 // Edge positions
+//***Delete nothing from graph
 var data_edge_positions = [
   {'edgeId': 0, 'instrumentId': 0, 'qty': 0},
   {'edgeId': 1, 'instrumentId': 0, 'qty': 0},
@@ -8150,6 +8151,7 @@ var data_node_positions = [
 ];
 
 // Cost of every edge
+// Deletes screen
 var data_edge_cost = [
   {'edgeId': 0, 'instrumentId': 0, 'cost': 1},
   {'edgeId': 1, 'instrumentId': 0, 'cost': 2},
