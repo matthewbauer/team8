@@ -11,6 +11,10 @@ D3 useful links
 
 //Notes and comments from Team Jayhawk
 -Most code was edited in code.js
--The main approach for this project was to use the previously defined d3.js libraries
+-The data from data.js was used as the input
+-The index.html runs the program
+-The file d3.js is a library that contains functions used for the functionality
+-The main approach for this project was to use the previously defined d3.js libraries to accomplish goals for the project
 -Most naming conventions for variables and functions were standard
 -Used the data from data.js to parse each node and obtain information from each one
+-The primary approach for the product was to use the edge_instruments and edge_positions to design links between nodes

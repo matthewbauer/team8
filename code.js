@@ -148,8 +148,11 @@ function main() {
 		.enter().append("g")
 		.attr("class", "node")
 		.on("mouseover", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "visible")
+			.style("fill", function (d) { return "#ff0000" })
 			svg.selectAll("#line1").text("name: " + d.name)
 			svg.selectAll("#line2").text("position: " + Math.round(d.position))
+
 		})
 		.on("mouseout", function(d) {
 			svg.selectAll("#line1").text("")
