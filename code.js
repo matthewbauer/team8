@@ -94,6 +94,12 @@ function main() {
 		.data(graph.nodes)
 		.enter().append("g")
 		.attr("class", "node")
+		.on("mouseover", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "visible")
+		})
+		.on("mouseout", function(d) {
+			d3.select(this).selectAll("text").style("visibility", "hidden")
+		})
 
 	node.append("circle")
 		.attr("r", nodeRadius)
@@ -105,6 +111,7 @@ function main() {
 		.text(function(d) { return d.name })
 		.style("stroke", "gray")
 		.attr("class", "name")
+		.style("visibility", "hidden")
 
 	d3.selectAll("line")
 		.attr("x1", function (d) { return d.source.x })
