@@ -18,3 +18,8 @@ D3 useful links
 -Most naming conventions for variables and functions were standard
 -Used the data from data.js to parse each node and obtain information from each one
 -The primary approach for the product was to use the edge_instruments and edge_positions to design links between nodes
+
+//Programs used
+-Atom was used as a text editor
+-Used d3.js libraries
+-No other libraries were used other than d3.js
