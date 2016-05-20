@@ -116,6 +116,7 @@ function main() {
 		.attr("class", "node")
 		.on("mouseover", function(d) {
 			d3.select(this).selectAll("text").style("visibility", "visible")
+			.style("fill", function (d) { return "#ff0000" })
 		})
 		.on("mouseout", function(d) {
 			d3.select(this).selectAll("text").style("visibility", "hidden")
