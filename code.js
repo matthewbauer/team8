@@ -21,10 +21,13 @@ function toMapArray(map, key) {
 	return out
 }
 
+//declare instruments
 var instruments = toMap(data_instruments, 'id')
+//declare edges
 var edges = toMapArray(data_edge_positions, 'edgeId')
 
-function totalPosition(ns) {
+function totalPosition(ns)
+{
 	return ns.map(function(instrument) {
 		return instrument.qty * instruments[instrument.instrumentId].price
 	}).reduce(function(a, b) {
@@ -42,6 +45,7 @@ function main() {
 
 	// Force layout
 	var force = d3.layout.force()
+		//This doesn't do much
 		.charge(-120)
 		.linkDistance(linkDistance)
 		.size([width, height])
@@ -71,12 +75,7 @@ function main() {
 	var link = svg.selectAll(".link")
 	  .data(graph.links)
 		.enter().append("g")
-		.on("mouseover", function(d) {
-			d3.select(this).selectAll("text").style("visibility", "visible")
-		})
-		.on("mouseout", function(d) {
-			d3.select(this).selectAll("text").style("visibility", "hidden")
-		})
+
 
 	link.append("line")
 		.attr("class", "link")
@@ -87,8 +86,10 @@ function main() {
 		.attr("dx", 12)
 		.attr("dy", ".35em")
 		.text(function(d) { return d.position })
+		.style("stroke", "black")
 		.attr("class", "linelabel")
-		.style("visibility", "hidden")
+		.style("visibility", "visible")
+
 
 	// Set nodes attributes
 	var node = svg.selectAll(".node")
