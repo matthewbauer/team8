@@ -3,6 +3,7 @@ var height = window.innerHeight - 10
 var linkDistance = 200
 var nodeRadius = 20
 
+
 function toMap(map, key) {
 	var out = {}
 	for (var k in map) {
@@ -10,6 +11,7 @@ function toMap(map, key) {
 	}
 	return out
 }
+
 
 function toMapArray(map, key) {
 	var out = {}
@@ -26,6 +28,7 @@ var instruments = toMap(data_instruments, 'id')
 //declare edges
 var edges = toMapArray(data_edge_positions, 'edgeId')
 
+//Obtains the position of the price difference and sends it
 function totalPosition(ns)
 {
 	return ns.map(function(instrument) {
@@ -66,6 +69,7 @@ function main() {
 		.attr("markerHeight", 12)
 		.attr("orient", "auto")
 
+	//Graphs nodes and links
 	force
 		.nodes(graph.nodes)
 		.links(graph.links)
@@ -101,10 +105,12 @@ function main() {
 			d3.select(this).selectAll("text").style("visibility", "hidden")
 		})
 
+	//Appends node circle
 	node.append("circle")
 		.attr("r", nodeRadius)
 		.style("fill", function (d) { return color(d.group) })
 
+	//Appends node text
 	node.append("text")
 		.attr("dx", 12)
 		.attr("dy", ".35em")
@@ -113,20 +119,24 @@ function main() {
 		.attr("class", "name")
 		.style("visibility", "hidden")
 
+	//Draws all the lines
 	d3.selectAll("line")
 		.attr("x1", function (d) { return d.source.x })
 		.attr("y1", function (d) { return d.source.y })
 		.attr("x2", function (d) { return d.target.x })
 		.attr("y2", function (d) { return d.target.y })
 
+	//Draws labels for the lines
 	d3.selectAll(".linelabel")
 		.attr("x", function (d) { return (d.source.x + d.target.x) / 2 })
 		.attr("y", function (d) { return (d.source.y + d.target.y) / 2 })
 
+	//Draw the circles for the nodes
 	d3.selectAll("circle")
 		.attr("cx", function (d) { return d.x })
 		.attr("cy", function (d) { return d.y })
 
+	//Shows the name of the nodes
 	d3.selectAll(".name")
 		.attr("x", function (d) { return d.x })
 		.attr("y", function (d) { return d.y })
