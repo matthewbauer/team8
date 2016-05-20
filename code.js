@@ -125,7 +125,7 @@ function main() {
 		.attr("id", "line1")
 		.attr("x", 25)
 		.attr("y", 50)
-		.style("font-style", "bold")
+		.style("font-weight", "bold")
 
 	svg.append("text")
 		.text("")
