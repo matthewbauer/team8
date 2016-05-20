@@ -1,4 +1,4 @@
-var width = 800
+var width = 1200
 var height = 600
 var linkDistance = 200
 var nodeRadius = 20
@@ -91,11 +91,41 @@ function main() {
 		.links(graph.links)
 		.start()
 
+	svg.append("line")
+		.attr("x1", 0)
+		.attr("y1", 0)
+		.attr("x2", 0)
+		.attr("y2", 400)
+		.style("stroke-width", 5)
+		.style("stroke", "black")
+	svg.append("line")
+		.attr("x1", 0)
+		.attr("y1", 400)
+		.attr("x2", 200)
+		.attr("y2", 400)
+		.style("stroke-width", 5)
+		.style("stroke", "black")
+	svg.append("line")
+		.attr("x1", 200)
+		.attr("y1", 400)
+		.attr("x2", 200)
+		.attr("y2", 0)
+		.style("stroke-width", 5)
+		.style("stroke", "black")
+	svg.append("line")
+		.attr("x1", 200)
+		.attr("y1", 0)
+		.attr("x2", 0)
+		.attr("y2", 0)
+		.style("stroke-width", 5)
+		.style("stroke", "black")
+
 	svg.append("text")
-		.text("")
+		.text("Information")
 		.attr("id", "line1")
 		.attr("x", 25)
 		.attr("y", 50)
+		.style("font-style", "bold")
 
 	svg.append("text")
 		.text("")
@@ -115,21 +145,27 @@ function main() {
 		.attr("x", 25)
 		.attr("y", 125)
 
+	svg.append("text")
+		.text("")
+		.attr("id", "line5")
+		.attr("x", 25)
+		.attr("y", 150)
+
 	// Set link attributes
 	var link = svg.selectAll(".link")
 	  .data(graph.links)
 		.enter().append("g")
 		.on("mouseover", function(d) {
-			svg.selectAll("#line1").text("source: " + d.source.name)
-			svg.selectAll("#line2").text("target: " + d.target.name)
-			svg.selectAll("#line3").text("position: " + Math.round(d.position))
-			svg.selectAll("#line4").text("cost: " + Math.round(d.cost))
+			svg.selectAll("#line2").text("source: " + d.source.name)
+			svg.selectAll("#line3").text("target: " + d.target.name)
+			svg.selectAll("#line4").text("position: " + Math.round(d.position))
+			svg.selectAll("#line5").text("cost: " + Math.round(d.cost))
 		})
 		.on("mouseout", function(d) {
-			svg.selectAll("#line1").text("")
 			svg.selectAll("#line2").text("")
 			svg.selectAll("#line3").text("")
 			svg.selectAll("#line4").text("")
+			svg.selectAll("#line5").text("")
 		})
 
 	link.append("line")
@@ -154,15 +190,15 @@ function main() {
 		.on("mouseover", function(d) {
 			d3.select(this).selectAll("circle")
 				.style("fill", "#ff0000")
-			svg.selectAll("#line1").text("name: " + d.name)
-			svg.selectAll("#line2").text("position: " + Math.round(d.position))
+			svg.selectAll("#line2").text("name: " + d.name)
+			svg.selectAll("#line3").text("position: " + Math.round(d.position))
 
 		})
 		.on("mouseout", function(d) {
 			d3.select(this).selectAll("circle")
 				.style("fill", color(d.group))
-			svg.selectAll("#line1").text("")
 			svg.selectAll("#line2").text("")
+			svg.selectAll("#line3").text("")
 		})
 		.style("visibility", function(d) {
 			if (d.id == 26)
@@ -177,7 +213,7 @@ function main() {
 		.style("fill", function(d) { return color(d.group) })
 
 	//Draws all the lines
-	d3.selectAll("line")
+	d3.selectAll(".link")
 		.attr("x1", function(d) { return d.source.x })
 		.attr("y1", function(d) { return d.source.y })
 		.attr("x2", function(d) { return d.target.x })
@@ -203,8 +239,8 @@ function toNode(data) {
 	return {
 		name: data.name,
 		group: 1,
-		x: (data.x + 500) * width / 2000,
-		y: (data.y + 100) * height / 1300,
+		x: (data.x + 900) * 1000 / 2000,
+		y: (data.y + 100) * 600 / 1300,
 		position: totalPosition(node_positions[data.id]),
 		id: data.id,
 	}
