@@ -130,7 +130,16 @@ function main() {
 
 	link.append("line")
 		.attr("class", "link")
-		.style("stroke-width", 10)
+		.style("stroke-width", function(d) {
+			if (d.position == 0)
+				return 1
+			if (d.position < 1000000)
+				return 2
+			if (d.position < 10000000)
+				return 3
+			if (d.position < 100000000)
+				return 4
+		})
 		.style("marker-end",  "url(#suit)")
 
 	// Set nodes attributes
