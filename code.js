@@ -82,8 +82,8 @@ function main() {
 		.attr("orient", "auto")
 		.append("path")
 			.attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
-			.style("stroke", "#4679BD")
-			.style("opacity", "0.6")
+			.style("stroke", "#000")
+			.style("opacity", "1")
 
 	//Graphs nodes and links
 	force
@@ -152,13 +152,15 @@ function main() {
 		.enter().append("g")
 		.attr("class", "node")
 		.on("mouseover", function(d) {
-			d3.select(this).selectAll("text").style("visibility", "visible")
-			.style("fill", function (d) { return "#ff0000" })
+			d3.select(this).selectAll("circle")
+				.style("fill", "#ff0000")
 			svg.selectAll("#line1").text("name: " + d.name)
 			svg.selectAll("#line2").text("position: " + Math.round(d.position))
 
 		})
 		.on("mouseout", function(d) {
+			d3.select(this).selectAll("circle")
+				.style("fill", color(d.group))
 			svg.selectAll("#line1").text("")
 			svg.selectAll("#line2").text("")
 		})
