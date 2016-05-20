@@ -3,6 +3,7 @@
 */
 
 // All nodes
+//***Deletes screen
 var data_nodes = [
   {'id': 0, 'name': 'Node1', 'x': 1338.55554750021, 'y': 264.234686482725},
   {'id': 1, 'name': 'Node2', 'x': 728.75619711833, 'y': 175.092140997192},
@@ -48,6 +49,7 @@ var data_nodes = [
 ];
 
 // All edges
+// ***Deletes all edges from nodes
 var data_edges = [
   {'id': 0, 'fromNodeId': 17, 'toNodeId': 24},
   {'id': 1, 'fromNodeId': 20, 'toNodeId': 6},
