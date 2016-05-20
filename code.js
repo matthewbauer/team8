@@ -158,15 +158,6 @@ function main() {
 		.attr("r", nodeRadius)
 		.style("fill", function(d) { return color(d.group) })
 
-	//Appends node text
-	node.append("text")
-		.attr("dx", 12)
-		.attr("dy", ".35em")
-		.text(function(d) { return d.name })
-		.style("stroke", "gray")
-		.attr("class", "name")
-		.style("visibility", "hidden")
-
 	//Draws all the lines
 	d3.selectAll("line")
 		.attr("x1", function(d) { return d.source.x })
