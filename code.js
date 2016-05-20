@@ -1,8 +1,7 @@
-var width = window.innerWidth - 10
-var height = window.innerHeight - 10
+var width = 800
+var height = 600
 var linkDistance = 200
 var nodeRadius = 20
-
 
 function toMap(map, key) {
 	var out = {}
@@ -26,10 +25,14 @@ function toMapArray(map, key) {
 //declare instruments
 var instruments = toMap(data_instruments, 'id')
 //declare edges
-var edges = toMapArray(data_edge_positions, 'edgeId')
+var edge_positions = toMapArray(data_edge_positions, 'edgeId')
+//declare nodes
+var node_positions = toMapArray(data_node_positions, 'nodeId')
 
 //Obtains the position of the price difference and sends it
 function totalPosition(ns) {
+	if (!ns)
+		return 0
 	return ns.map(function(instrument) {
 		return instrument.qty * instruments[instrument.instrumentId].price
 	}).reduce(function(a, b) {
@@ -84,30 +87,51 @@ function main() {
 		.links(graph.links)
 		.start()
 
+	svg.append("text")
+		.text("")
+		.attr("id", "line1")
+		.attr("x", 25)
+		.attr("y", 50)
+
+	svg.append("text")
+		.text("")
+		.attr("id", "line2")
+		.attr("x", 25)
+		.attr("y", 75)
+
+	svg.append("text")
+		.text("")
+		.attr("id", "line3")
+		.attr("x", 25)
+		.attr("y", 100)
+
+	svg.append("text")
+		.text("")
+		.attr("id", "line4")
+		.attr("x", 25)
+		.attr("y", 125)
+
 	// Set link attributes
 	var link = svg.selectAll(".link")
 	  .data(graph.links)
 		.enter().append("g")
+		.on("mouseover", function(d) {
+			svg.selectAll("#line1").text("source: " + d.source.name)
+			svg.selectAll("#line2").text("target: " + d.target.name)
+			svg.selectAll("#line3").text("position: " + Math.round(d.position))
+			svg.selectAll("#line4").text("cost: " + Math.round(d.cost))
+		})
+		.on("mouseout", function(d) {
+			svg.selectAll("#line1").text("")
+			svg.selectAll("#line2").text("")
+			svg.selectAll("#line3").text("")
+			svg.selectAll("#line4").text("")
+		})
 
 	link.append("line")
 		.attr("class", "link")
 		.style("stroke-width", 10)
 		.style("marker-end",  "url(#suit)")
-
-	link.append("text")
-		.attr("dx", 12)
-		.attr("dy", ".35em")
-		.text(function(d) { return d.position })
-		.style("stroke", "black")
-		.attr("class", "linelabel")
-		.style("visibility", "visible")
-
-	link.append("text")
-		.attr("dx", 12)
-		.attr("dy", ".35em")
-		.text(function(d) { return d.cost })
-		.style("stroke", "black")
-		.attr("class", "linecost")
 
 	// Set nodes attributes
 	var node = svg.selectAll(".node")
@@ -115,17 +139,24 @@ function main() {
 		.enter().append("g")
 		.attr("class", "node")
 		.on("mouseover", function(d) {
-			d3.select(this).selectAll("text").style("visibility", "visible")
-			.style("fill", function (d) { return "#ff0000" })
+			svg.selectAll("#line1").text("name: " + d.name)
+			svg.selectAll("#line2").text("position: " + Math.round(d.position))
 		})
 		.on("mouseout", function(d) {
-			d3.select(this).selectAll("text").style("visibility", "hidden")
+			svg.selectAll("#line1").text("")
+			svg.selectAll("#line2").text("")
+		})
+		.style("visibility", function(d) {
+			if (d.id == 26)
+				return "hidden"
+			else
+				return "visible"
 		})
 
 	//Appends node circle
 	node.append("circle")
 		.attr("r", nodeRadius)
-		.style("fill", function (d) { return color(d.group) })
+		.style("fill", function(d) { return color(d.group) })
 
 	//Appends node text
 	node.append("text")
@@ -138,29 +169,15 @@ function main() {
 
 	//Draws all the lines
 	d3.selectAll("line")
-		.attr("x1", function (d) { return d.source.x })
-		.attr("y1", function (d) { return d.source.y })
-		.attr("x2", function (d) { return d.target.x })
-		.attr("y2", function (d) { return d.target.y })
-
-	//Draws labels for the lines
-	d3.selectAll(".linelabel")
-		.attr("x", function (d) { return (d.source.x + d.target.x) / 2 })
-		.attr("y", function (d) { return (d.source.y + d.target.y) / 2 })
-
-	d3.selectAll(".linecost")
-		.attr("x", function (d) { return (d.source.x + d.target.x) / 2 })
-		.attr("y", function (d) { return (d.source.y + d.target.y) / 2 + 24 })
+		.attr("x1", function(d) { return d.source.x })
+		.attr("y1", function(d) { return d.source.y })
+		.attr("x2", function(d) { return d.target.x })
+		.attr("y2", function(d) { return d.target.y })
 
 	//Draw the circles for the nodes
 	d3.selectAll("circle")
-		.attr("cx", function (d) { return d.x })
-		.attr("cy", function (d) { return d.y })
-
-	//Shows the name of the nodes
-	d3.selectAll(".name")
-		.attr("x", function (d) { return d.x })
-		.attr("y", function (d) { return d.y })
+		.attr("cx", function(d) { return d.x })
+		.attr("cy", function(d) { return d.y })
 }
 
 function toLink(edge) {
@@ -168,8 +185,8 @@ function toLink(edge) {
 		source: edge.fromNodeId,
 		target: edge.toNodeId,
 		id: edge.id,
-		position: totalPosition(edges[edge.id]),
-		cost: totalCost(edges[edge.id]),
+		position: totalPosition(edge_positions[edge.id]),
+		cost: totalCost(edge_positions[edge.id]),
 	}
 }
 
@@ -179,5 +196,7 @@ function toNode(data) {
 		group: 1,
 		x: (data.x + 500) * width / 2000,
 		y: (data.y + 100) * height / 1300,
+		position: totalPosition(node_positions[data.id]),
+		id: data.id,
 	}
 }
