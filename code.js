@@ -29,10 +29,19 @@ var instruments = toMap(data_instruments, 'id')
 var edges = toMapArray(data_edge_positions, 'edgeId')
 
 //Obtains the position of the price difference and sends it
-function totalPosition(ns)
-{
+function totalPosition(ns) {
 	return ns.map(function(instrument) {
 		return instrument.qty * instruments[instrument.instrumentId].price
+	}).reduce(function(a, b) {
+		return a + b
+	}, 0)
+}
+
+function totalCost(ns) {
+	return ns.map(function(n) {
+		return data_edge_cost.find(function(x) {
+			return x.instrumentId == n.instrumentId && x.edgeId == n.edgeId
+		}).cost
 	}).reduce(function(a, b) {
 		return a + b
 	}, 0)
@@ -93,6 +102,13 @@ function main() {
 		.attr("class", "linelabel")
 		.style("visibility", "visible")
 
+	link.append("text")
+		.attr("dx", 12)
+		.attr("dy", ".35em")
+		.text(function(d) { return d.cost })
+		.style("stroke", "black")
+		.attr("class", "linecost")
+
 	// Set nodes attributes
 	var node = svg.selectAll(".node")
 		.data(graph.nodes)
@@ -131,6 +147,10 @@ function main() {
 		.attr("x", function (d) { return (d.source.x + d.target.x) / 2 })
 		.attr("y", function (d) { return (d.source.y + d.target.y) / 2 })
 
+	d3.selectAll(".linecost")
+		.attr("x", function (d) { return (d.source.x + d.target.x) / 2 })
+		.attr("y", function (d) { return (d.source.y + d.target.y) / 2 + 24 })
+
 	//Draw the circles for the nodes
 	d3.selectAll("circle")
 		.attr("cx", function (d) { return d.x })
@@ -148,6 +168,7 @@ function toLink(edge) {
 		target: edge.toNodeId,
 		id: edge.id,
 		position: totalPosition(edges[edge.id]),
+		cost: totalCost(edges[edge.id]),
 	}
 }
 
